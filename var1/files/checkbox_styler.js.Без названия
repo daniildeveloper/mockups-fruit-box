@@ -1,0 +1,44 @@
+$(document).ready(function(){
+	//********************************************
+	// Checkboxen grafisch gestalten
+	$("input[type=checkbox]").each(function(){
+		if($(this).attr("checked")) {
+			$(this).wrap('<span class="checkbox-wrapper active" />');
+		} else {
+			$(this).wrap('<span class="checkbox-wrapper" />');
+		}
+		$(this).change(function(){
+			if($(this).attr("checked")) {
+				$(this).parent().addClass("active");
+			} else {
+				$(this).parent().removeClass("active");
+			}
+		});
+		$(this).hide();
+	});
+	$("#checkAll").parent().click(function(){
+		$("#basketRemoveAll").trigger("click");
+		return false;
+	});
+	$(".checkbox-wrapper").live("click", function(){
+		var checkbox_element = $(this).find("input[type=checkbox]");
+		if(checkbox_element.attr('bundleid')) {
+			$("input[bundleid='"+checkbox_element.attr('bundleid')+"'][type='checkbox']").each(function(){
+				$(this).attr('checked', !$(this).attr('checked'))	;
+				$(this).trigger("change");
+			});
+		} else {
+			checkbox_element.attr("checked", !checkbox_element.attr("checked"));
+			checkbox_element.trigger("change");
+		}
+	});
+	window.setInterval(function(){
+		$(".checkbox-wrapper input").each(function(){
+			var marked_as_active = $(this).parent().hasClass("active");
+			if(marked_as_active != $(this).attr("checked")) {
+				$(this).trigger("change");
+			}
+		});
+	}, 300)
+	//********************************************
+});

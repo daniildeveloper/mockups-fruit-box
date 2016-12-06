@@ -1,0 +1,193 @@
+$(document).ready(function(){
+	// replace "ab"-Preise to "from"-Preise in englisch version
+	if( $("[lang='en'] #productList .priceBlock, [lang='en'] #productPrice span").length ) {
+		$("#productList .priceBlock, #productPrice span").each(function(){
+			var text = $(this).text();
+			$(this).text(text.replace("ab", "from"));
+		});
+	}
+	
+	// *******************************************
+	// styling of start box content box 2
+	$(".start-content-box-2").prepend('<img src="'+image_url+'bg_start_content_2_arrow.png" alt="" class="start-content-box-2-topimage" />');
+	$(".start-content-box-2").append('<img src="'+image_url+'bg_start_content_2_arrow.png" alt="" class="start-content-box-2-bottomimage" />');
+	// *******************************************
+
+
+	// *******************************************
+	// Remove button
+	$(".basket-remove").click(function(){
+		$(this).find("input.basket-remove-article-id").val("1");
+		$(this).append('<input name="removeBtn" value="1" type="hidden" />');
+		$(this).parents("form").submit();
+	});
+	// *******************************************
+	
+	// *******************************************
+	// make perparams mandatory
+	$('#toBasket').live('click', function(){
+		if($('#persistentParam').length > 0 && !$('#persistentParam').val()) {
+			if($("#languages .en.selected").length > 0) {
+				alert("Please enter a delivery date.");
+			} else {
+				alert("Bitte geben Sie ein Lieferdatum an.");
+			}
+			$('#persistentParam').css({
+				'border-color' : 'red'
+			});
+			return false;
+		}
+	});
+	if( $(".tobasketFunction").length ) {
+		if( $(".tobasketFunction button#toBasket").attr('disabled') ) {
+			$(".gw-dropDown-varselect-box .gw_dropDown_varselect span").css({
+				'border-color' : 'red'
+			});
+		}
+	}
+	// *******************************************
+
+	//********************************************
+	// Slideshow auf Startseite
+	var slideshow_imgs = $("#slideshow-start-box-inner .slideshow-image-box");
+	var slideshow_img_count = slideshow_imgs.length;
+	var current_img_count_slider_start_big = 1;
+	var slideshow_interval = 5000;
+	var slideshow_animation_time = 1000;
+	
+	if(slideshow_img_count > 1) {
+		$("#slideshow-counter").css("z-index", "7");		
+		// eindeutige IDs vergeben
+		slideshow_imgs.each(function(){
+			$(this).attr("rel",current_img_count_slider_start_big);
+			$(this).addClass("slideshow-image");
+			if(current_img_count_slider_start_big != 1) {
+				$(this).hide();
+				$(this).css("z-index", "5");
+				$("#slideshow-counter").append('<div class="slideshow-counter-indicator" id="slideshow-counter-'+current_img_count_slider_start_big+'" rel="'+current_img_count_slider_start_big+'"></div>');
+			} else {
+				$(this).addClass("active");
+				$(this).css("z-index", "6");
+				$("#slideshow-counter").append('<div class="slideshow-counter-indicator active" id="slideshow-counter-'+current_img_count_slider_start_big+'" rel="'+current_img_count_slider_start_big+'"></div>');
+			}
+			$(this).attr("id","slideshow-image-"+current_img_count_slider_start_big);
+			current_img_count_slider_start_big++;
+		});
+		
+		slideshow = window.setInterval(function(){
+			// Nächstes Slideshowbild festlegen
+			prev_img_count = ((current_img_count_slider_start_big-1)%slideshow_img_count)+1;
+			current_img_count_slider_start_big = (current_img_count_slider_start_big%slideshow_img_count)+1;
+	//		console.log("prev_img_count: "+prev_img_count);
+	//		console.log("current_img_count_slider_start_big: "+current_img_count_slider_start_big);
+			
+			$("#slideshow-image-"+current_img_count_slider_start_big).show();
+			$(".slideshow-counter-indicator").removeClass("active");
+			$("#slideshow-image-"+prev_img_count).fadeOut(slideshow_animation_time, function(){
+				$("#slideshow-counter-"+current_img_count_slider_start_big).addClass("active");
+				
+				$("#slideshow-image-"+prev_img_count).removeClass("active");
+				$("#slideshow-image-"+prev_img_count).css("z-index","5");
+				
+				$("#slideshow-image-"+current_img_count_slider_start_big).addClass("active");
+				$("#slideshow-image-"+current_img_count_slider_start_big).css("z-index","6");
+			});
+		},slideshow_interval);
+		
+		$("#slideshow-start-box").mouseenter(function(){
+			//window.clearInterval(slideshow);
+		});
+		
+		$(".slideshow-counter-indicator").click(function(){
+			window.clearInterval(slideshow);
+			current_img_count_slider_start_big = $(this).attr("rel");
+			prev_img_count = $(".slideshow-image.active").attr("rel");
+			if(current_img_count_slider_start_big != prev_img_count) {
+				$("#slideshow-image-"+current_img_count_slider_start_big).show();
+				$(".slideshow-counter-indicator").removeClass("active");
+				$("#slideshow-counter-"+current_img_count_slider_start_big).addClass("active");
+				$("#slideshow-image-"+prev_img_count).fadeOut(slideshow_animation_time, function(){
+		
+					$("#slideshow-image-"+prev_img_count).removeClass("active");
+					$("#slideshow-image-"+prev_img_count).css("z-index","5");
+					
+					$("#slideshow-image-"+current_img_count_slider_start_big).addClass("active");
+					$("#slideshow-image-"+current_img_count_slider_start_big).css("z-index","6");
+				});
+			}
+			slideshow = window.setInterval(function(){
+				// Nächstes Slideshowbild festlegen
+				prev_img_count = ((current_img_count_slider_start_big-1)%slideshow_img_count)+1;
+				current_img_count_slider_start_big = (current_img_count_slider_start_big%slideshow_img_count)+1;
+				
+				$("#slideshow-image-"+current_img_count_slider_start_big).show();
+				$(".slideshow-counter-indicator").removeClass("active");
+				$("#slideshow-image-"+prev_img_count).fadeOut(slideshow_animation_time, function(){
+					$("#slideshow-counter-"+current_img_count_slider_start_big).addClass("active");
+					
+					$("#slideshow-image-"+prev_img_count).removeClass("active");
+					$("#slideshow-image-"+prev_img_count).css("z-index","5");
+					
+					$("#slideshow-image-"+current_img_count_slider_start_big).addClass("active");
+					$("#slideshow-image-"+current_img_count_slider_start_big).css("z-index","6");
+				});
+			},slideshow_interval);
+		});
+	}
+	//********************************************
+	
+	//********************************************
+	// Abo mit Bundle Modul verbinden
+	$(".abo-basketitems input[bundleid]").each(function(){
+		$(this).addClass("bundlefather");
+		var bundleid = $(this).attr('bundleid');
+		$(".abo-basketitems [oxid='"+bundleid+"']").attr('bundleid', bundleid);
+	});
+	
+	// disable bundle children inputs
+	$(".abo-basketitems input[bundleid]").each(function(){
+		if(!$(this).hasClass('bundlefather')) {
+			$(this).attr('readonly', true);
+		}
+	});
+	
+	// text inputs
+	$(".abo-basketitems input[type='text'][bundleid]").keyup(function(){
+		var value_of_this = $(this).val();
+		$(".abo-basketitems input[type='text'][bundleid]").val(value_of_this);
+	});
+	//********************************************
+	
+	
+	//********************************************
+	// start fruitbox video
+	$('#fruitboxvideo-play-btn').on('click', function(ev) {
+		$("#fruitboxvideo")[0].src += "&autoplay=1";
+		$(this).fadeOut();
+		ev.preventDefault();
+	});
+	//********************************************
+	
+	var biggest_partner_box = 0;
+	$(".partner-element").each(function(){
+		if(biggest_partner_box < $(this).height()) {
+			biggest_partner_box = $(this).height();
+		}		
+	});
+	$(".partner-element").each(function(){
+		var $image = $(this).find("img");
+		$(this).css({
+			'position' : 'relative',
+			'bottom' : ( ((biggest_partner_box-$image.height()) / 2)|0 )+'px'
+		})
+	});
+});
+
+$(window).bind('scroll', function() {
+var navHeight = 285;
+     if ($(window).scrollTop() > navHeight) {
+         $('#navigation').addClass('fixed');
+     } else {
+         $('#navigation').removeClass('fixed');
+     }
+});

@@ -1,0 +1,21 @@
+.abobtn.removeabo:hover {
+  background: linear-gradient(to bottom, #F2F2F2, #696969) transparent;
+  color: #eeeded;
+  margin-right: 10px;
+}
+
+.abobtn.removeabo {
+  background: linear-gradient(to bottom, #E2E2E2, #595959) transparent;
+  color: #eeeded;
+  margin-right: 10px;
+}
+
+.abobtn {
+  background: linear-gradient(to bottom, #FF8604, #EC6105) transparent;
+  margin-right: 10px;
+}
+
+.abobtn:hover {
+  background: linear-gradient(to bottom, #FF8604, #EC6105) transparent;
+  margin-right: 10px;
+}

@@ -1,0 +1,13 @@
+$(document).ready(function($){
+	//********************************************
+	// selectbox styler
+	$(".gw_dropDown_varselect li").live("click", function(){
+		$(this).find("a").trigger("click");
+	});
+	$(".mouseover").live("mouseenter", function(){
+		$(this).addClass("hover");
+	});
+	$(".mouseover").live("mouseleave", function(){
+		$(this).removeClass("hover");
+	});	//********************************************
+});
